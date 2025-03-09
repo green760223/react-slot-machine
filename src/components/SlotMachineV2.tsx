@@ -1,26 +1,13 @@
 import { useState, useRef, useEffect } from "react"
-import { Button } from "@/components/ui/button"
-// import { Card } from "@/components/ui/card"
+import EmployeesData from "../data/EmployeesData"
 import "./SlotMachineV2.css"
-
-// 模擬員工資料
-const EMPLOYEES = [
-  { id: 0, dept: "資訊部", empNo: "RD001", name: "王小明" },
-  { id: 1, dept: "資訊部", empNo: "RD002", name: "李小華" },
-  { id: 2, dept: "業務部", empNo: "SA001", name: "張小美" },
-  { id: 3, dept: "業務部", empNo: "SA002", name: "陳小強" },
-  { id: 4, dept: "財務部", empNo: "FN001", name: "林小芳" },
-  { id: 5, dept: "財務部", empNo: "FN002", name: "吳小安" },
-  { id: 6, dept: "人事部", empNo: "HR001", name: "黃小傑" },
-  { id: 7, dept: "人事部", empNo: "HR002", name: "周小萍" },
-]
 
 const SlotMachineV2 = () => {
   const [isSpinning, setIsSpinning] = useState(false)
   const [deptSpinning, setDeptSpinning] = useState(false)
   const [empNoSpinning, setEmpNoSpinning] = useState(false)
   const [nameSpinning, setNameSpinning] = useState(false)
-  const [winner, setWinner] = useState<(typeof EMPLOYEES)[0] | null>(null)
+  const [winner, setWinner] = useState<(typeof EmployeesData)[0] | null>(null)
   const [soundEnabled, setSoundEnabled] = useState(true)
   const [selectedWinnerIndex, setSelectedWinnerIndex] = useState(0)
 
@@ -69,11 +56,11 @@ const SlotMachineV2 = () => {
     setWinner(null)
     playSound(spinSoundRef)
 
-    const winnerIndex = Math.floor(Math.random() * EMPLOYEES.length)
+    const winnerIndex = Math.floor(Math.random() * EmployeesData.length)
     setSelectedWinnerIndex(winnerIndex)
-    const winner = EMPLOYEES[winnerIndex]
+    const winner = EmployeesData[winnerIndex]
 
-    const totalItems = EMPLOYEES.length
+    const totalItems = EmployeesData.length
     const deptSpins = Math.floor(Math.random() * 20) + 20
     const empNoSpins = Math.floor(Math.random() * 20) + 20
     const nameSpins = Math.floor(Math.random() * 20) + 20
@@ -87,18 +74,18 @@ const SlotMachineV2 = () => {
 
     setTimeout(() => {
       setDeptSpinning(false)
-    }, 1000)
+    }, 2000)
 
     setTimeout(() => {
       setEmpNoSpinning(false)
-    }, 2000)
+    }, 3000)
 
     setTimeout(() => {
       setNameSpinning(false)
       setIsSpinning(false)
       setWinner(winner)
       playSound(winSoundRef)
-    }, 3000)
+    }, 4000)
   }
 
   return (
@@ -114,31 +101,32 @@ const SlotMachineV2 = () => {
         </div>
 
         {/* 添加文字 - 頂部 */}
-        <div className='absolute top-[120px] left-1/2 -translate-x-1/2 w-full text-center'>
-          <div className='text-xl font-bold text-yellow-300 mb-1'>
+        {/* <div className='absolute top-[120px] left-1/2 -translate-x-1/2 w-full text-center'>
+          <div className='text-5xl font-bold text-white pt-20'>
             【貴賓獎】現金$20,000元 共五位
           </div>
           <div className='text-lg text-yellow-300'>
             感謝 中菲行國際物流集團創辦人 錢堯懷先生 贊助
           </div>
-        </div>
-
-        {/* 添加文字 - 紅毯區域 */}
-        <div className='absolute bottom-[100px] left-1/2 -translate-x-1/2 w-full text-center'>
-          <div className='text-2xl font-bold text-yellow-300 drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)]'>
-            抽獎組別：A/B/C
+        </div> */}
+        <div className='fixed top-0 left-0 w-full flex flex-col items-center pt-55'>
+          <div className='text-6xl font-bold text-white tracking-widest'>
+            【貴賓獎】現金$20,000元 共五位
+          </div>
+          <div className='text-6xl tracking-widest pt-10 text-white font-bold'>
+            感謝 中菲行國際物流集團創辦人 錢堯懷先生 贊助
           </div>
         </div>
 
-        {/* 老虎機容器 - 調整位置到白色框框內 */}
-        <div className='absolute top-[45%] left-1/2 -translate-x-1/2 w-full max-w-4xl px-4'>
-          <div className='p-0'>
+        {/* 老虎機容器 - 精確對齊白色方框 */}
+        <div className='absolute top-[40%] left-1/2 -translate-x-1/2 w-full max-w-[2000px]'>
+          <div className='flex items-center justify-center h-[350px] pr-20'>
             {/* 抽獎區域 */}
-            <div className='relative'>
+            <div className='relative w-full'>
               {/* 抽獎顯示區 */}
-              <div className='grid grid-cols-3 gap-4 p-4 rounded-lg'>
+              <div className='grid grid-cols-3 gap-8 px-8'>
                 {/* 部門欄位 */}
-                <div className='relative h-32 rounded-lg overflow-hidden backdrop-blur-sm bg-black/10'>
+                <div className='relative h-36 overflow-hidden'>
                   <div
                     ref={(el) => (reelRefs.current[0] = el)}
                     className={`slot-reel absolute inset-0 ${
@@ -153,14 +141,15 @@ const SlotMachineV2 = () => {
                           }
                         : {}
                     }>
-                    {[...Array(20)].map((_, index) => {
-                      const employee = EMPLOYEES[index % EMPLOYEES.length]
+                    {[...Array(EmployeesData.length)].map((_, index) => {
+                      const employee =
+                        EmployeesData[index % EmployeesData.length]
                       return (
                         <div
                           key={index}
-                          className='absolute w-full h-32 flex items-center justify-center'
+                          className='absolute w-full h-36 flex items-center justify-center'
                           style={{ top: `${index * 100}%` }}>
-                          <div className='text-2xl font-bold text-yellow-300'>
+                          <div className='text-7xl font-extrabold text-black tracking-widest'>
                             {employee.dept}
                           </div>
                         </div>
@@ -170,7 +159,7 @@ const SlotMachineV2 = () => {
                 </div>
 
                 {/* 員工編號欄位 */}
-                <div className='relative h-32 rounded-lg overflow-hidden backdrop-blur-sm bg-black/10'>
+                <div className='relative h-36 overflow-hidden'>
                   <div
                     ref={(el) => (reelRefs.current[1] = el)}
                     className={`slot-reel absolute inset-0 ${
@@ -185,14 +174,15 @@ const SlotMachineV2 = () => {
                           }
                         : {}
                     }>
-                    {[...Array(20)].map((_, index) => {
-                      const employee = EMPLOYEES[index % EMPLOYEES.length]
+                    {[...Array(EmployeesData.length)].map((_, index) => {
+                      const employee =
+                        EmployeesData[index % EmployeesData.length]
                       return (
                         <div
                           key={index}
-                          className='absolute w-full h-32 flex items-center justify-center'
+                          className='absolute w-full h-36 flex items-center justify-center'
                           style={{ top: `${index * 100}%` }}>
-                          <div className='text-2xl font-bold text-white'>
+                          <div className='text-7xl font-extrabold text-black tracking-widest'>
                             {employee.empNo}
                           </div>
                         </div>
@@ -202,7 +192,7 @@ const SlotMachineV2 = () => {
                 </div>
 
                 {/* 姓名欄位 */}
-                <div className='relative h-32 rounded-lg overflow-hidden backdrop-blur-sm bg-black/10'>
+                <div className='relative h-36 overflow-hidden'>
                   <div
                     ref={(el) => (reelRefs.current[2] = el)}
                     className={`slot-reel absolute inset-0 ${
@@ -217,14 +207,15 @@ const SlotMachineV2 = () => {
                           }
                         : {}
                     }>
-                    {[...Array(20)].map((_, index) => {
-                      const employee = EMPLOYEES[index % EMPLOYEES.length]
+                    {[...Array(EmployeesData.length)].map((_, index) => {
+                      const employee =
+                        EmployeesData[index % EmployeesData.length]
                       return (
                         <div
                           key={index}
-                          className='absolute w-full h-32 flex items-center justify-center'
+                          className='absolute w-full h-36 flex items-center justify-center'
                           style={{ top: `${index * 100}%` }}>
-                          <div className='text-2xl font-bold text-yellow-300'>
+                          <div className='text-7xl font-extrabold text-black tracking-widest'>
                             {employee.name}
                           </div>
                         </div>
@@ -239,17 +230,17 @@ const SlotMachineV2 = () => {
                 <div className='absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm rounded-lg opacity-0'>
                   <div className='grid grid-cols-3 gap-4 px-4 w-full'>
                     <div className='text-center'>
-                      <div className='text-2xl font-bold text-yellow-300'>
+                      <div className='text-4xl font-extrabold text-black'>
                         {winner.dept}
                       </div>
                     </div>
                     <div className='text-center'>
-                      <div className='text-2xl font-bold text-white'>
+                      <div className='text-4xl font-extrabold text-black'>
                         {winner.empNo}
                       </div>
                     </div>
                     <div className='text-center'>
-                      <div className='text-2xl font-bold text-yellow-300'>
+                      <div className='text-4xl font-extrabold text-black'>
                         {winner.name}
                       </div>
                     </div>
@@ -257,24 +248,13 @@ const SlotMachineV2 = () => {
                 </div>
               )}
             </div>
+          </div>
+        </div>
 
-            {/* 隱藏按鈕區域，但保留功能 */}
-            <div className='hidden'>
-              <Button
-                onClick={spin}
-                disabled={isSpinning}
-                className='w-full h-16 text-lg font-bold'>
-                <span>{isSpinning ? "抽獎中..." : "開始抽獎"}</span>
-              </Button>
-
-              <Button
-                variant='outline'
-                size='sm'
-                onClick={() => setSoundEnabled(!soundEnabled)}
-                className='w-full'>
-                音效: {soundEnabled ? "開啟" : "關閉"}
-              </Button>
-            </div>
+        {/* 添加文字 - 紅毯區域 */}
+        <div className='fixed bottom-0 left-0 w-full flex justify-center items-end pb-50'>
+          <div className='text-6xl font-bold text-white tracking-widest'>
+            抽獎組別：A/B/C
           </div>
         </div>
 
