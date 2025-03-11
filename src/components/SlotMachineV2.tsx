@@ -88,6 +88,17 @@ const SlotMachineV2 = () => {
     }, 4000)
   }
 
+  // 新增：處理部門名稱斷行的函數
+  const formatDept = (dept: string) => {
+    const keywords = ["點點心", "忠青商行", "炒湘湘"]
+    for (const keyword of keywords) {
+      if (dept.includes(keyword)) {
+        return dept.replace(keyword, `${keyword}\n`)
+      }
+    }
+    return dept
+  }
+
   return (
     <div>
       <div className='relative min-h-screen w-full'>
@@ -120,14 +131,14 @@ const SlotMachineV2 = () => {
         </div>
 
         {/* 老虎機容器 - 精確對齊白色方框 */}
-        <div className='absolute top-[40%] left-1/2 -translate-x-1/2 w-full max-w-[2000px]'>
-          <div className='flex items-center justify-center h-[350px] pr-20'>
+        <div className='absolute top-[45%] left-1/2 -translate-x-1/2 w-full max-w-[2600px] pt-50 '>
+          <div className='flex items-center justify-center pr-40 min-h-[500px]'>
             {/* 抽獎區域 */}
-            <div className='relative w-full'>
+            <div className='relative w-full '>
               {/* 抽獎顯示區 */}
-              <div className='grid grid-cols-3 gap-8 px-8'>
+              <div className='grid grid-cols-3 gap-4 px-4 w-full'>
                 {/* 部門欄位 */}
-                <div className='relative h-36 overflow-hidden'>
+                <div className='relative h-56 overflow-hidden'>
                   <div
                     ref={(el) => (reelRefs.current[0] = el)}
                     className={`slot-reel absolute inset-0 ${
@@ -148,10 +159,15 @@ const SlotMachineV2 = () => {
                       return (
                         <div
                           key={index}
-                          className='absolute w-full h-36 flex items-center justify-center'
+                          className='absolute w-full h-56 flex items-center justify-center'
                           style={{ top: `${index * 100}%` }}>
-                          <div className='text-7xl font-extrabold text-black tracking-widest'>
-                            {employee.dept}
+                          <div
+                            className='text-7xl font-extrabold text-black tracking-widest leading-relaxed'
+                            style={{
+                              whiteSpace: "pre-wrap",
+                              textAlign: "center",
+                            }}>
+                            {formatDept(employee.dept)}
                           </div>
                         </div>
                       )
@@ -160,7 +176,7 @@ const SlotMachineV2 = () => {
                 </div>
 
                 {/* 員工編號欄位 */}
-                <div className='relative h-36 overflow-hidden'>
+                <div className='relative h-56 overflow-hidden '>
                   <div
                     ref={(el) => (reelRefs.current[1] = el)}
                     className={`slot-reel absolute inset-0 ${
@@ -181,7 +197,7 @@ const SlotMachineV2 = () => {
                       return (
                         <div
                           key={index}
-                          className='absolute w-full h-36 flex items-center justify-center'
+                          className='absolute w-full h-56 flex items-center justify-center'
                           style={{ top: `${index * 100}%` }}>
                           <div className='text-7xl font-extrabold text-black tracking-widest'>
                             {employee.empNo}
@@ -193,7 +209,7 @@ const SlotMachineV2 = () => {
                 </div>
 
                 {/* 姓名欄位 */}
-                <div className='relative h-36 overflow-hidden'>
+                <div className='relative h-56 overflow-hidden'>
                   <div
                     ref={(el) => (reelRefs.current[2] = el)}
                     className={`slot-reel absolute inset-0 ${
@@ -214,7 +230,7 @@ const SlotMachineV2 = () => {
                       return (
                         <div
                           key={index}
-                          className='absolute w-full h-36 flex items-center justify-center'
+                          className='absolute w-full h-56 flex items-center justify-center'
                           style={{ top: `${index * 100}%` }}>
                           <div className='text-7xl font-extrabold text-black tracking-widest'>
                             {employee.name}
