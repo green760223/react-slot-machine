@@ -92,13 +92,14 @@ const SlotMachineV2 = () => {
     <div>
       <div className='relative min-h-screen w-full'>
         {/* 背景圖片容器 */}
-        <div className='absolute inset-0 w-full h-full'>
-          <img
-            src='/background.png'
-            alt='Dimerco award ceremony background'
-            className='object-cover w-full h-full'
-          />
-        </div>
+        <div
+          className='absolute inset-0 w-full h-full'
+          style={{
+            backgroundImage: "url('/background.png')",
+            backgroundSize: "cover", // 填滿畫面
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+          }}></div>
 
         {/* 添加文字 - 頂部 */}
         {/* <div className='absolute top-[120px] left-1/2 -translate-x-1/2 w-full text-center'>
@@ -109,12 +110,12 @@ const SlotMachineV2 = () => {
             感謝 中菲行國際物流集團創辦人 錢堯懷先生 贊助
           </div>
         </div> */}
-        <div className='fixed top-0 left-0 w-full flex flex-col items-center pt-55'>
-          <div className='text-6xl font-bold text-white tracking-widest'>
-            【貴賓獎】現金$20,000元 共五位
+        <div className='fixed top-0 left-0 w-full flex flex-col items-center pt-170'>
+          <div className='text-[100px] font-bold text-white tracking-widest'>
+            ★第一階段摸彩★
           </div>
-          <div className='text-6xl tracking-widest pt-10 text-white font-bold'>
-            感謝 中菲行國際物流集團創辦人 錢堯懷先生 贊助
+          <div className='text-[100px] tracking-widest text-white font-bold'>
+            NO.1-10獎 現金$3,000元，共10位
           </div>
         </div>
 
@@ -254,7 +255,7 @@ const SlotMachineV2 = () => {
         {/* 添加文字 - 紅毯區域 */}
         <div className='fixed bottom-0 left-0 w-full flex justify-center items-end pb-50'>
           <div className='text-6xl font-bold text-white tracking-widest'>
-            抽獎組別：A/B/C
+            {/* 抽獎組別：A/B/C */}
           </div>
         </div>
 

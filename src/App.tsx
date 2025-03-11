@@ -1,4 +1,4 @@
-import SlotMachine from "./components/SlotMachine"
+// import SlotMachine from "./components/SlotMachine"
 import SlotMachineV2 from "./components/SlotMachineV2"
 import "./App.css"
 
