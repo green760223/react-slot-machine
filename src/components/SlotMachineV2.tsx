@@ -187,7 +187,7 @@ export default function SlotMachineV2() {
       <div
         className='absolute inset-0 w-full h-full'
         style={{
-          backgroundImage: "url('/background.png')",
+          backgroundImage: "url('/background_16x9_new.png')",
           backgroundSize: "cover", // 填滿畫面
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
@@ -368,7 +368,7 @@ export default function SlotMachineV2() {
       </div>
 
       {/* 隱藏按鈕區域，但保留功能 */}
-      <div className='hidden'>
+      {/* <div className='hidden'>
         <Button
           onClick={() => spin()}
           disabled={isSpinning}
@@ -383,15 +383,15 @@ export default function SlotMachineV2() {
           className='w-full'>
           音效: {soundEnabled ? "開啟" : "關閉"}
         </Button>
-      </div>
+      </div> */}
 
       {/* 音效元素 */}
-      <audio ref={spinSoundRef} preload='auto'>
+      {/* <audio ref={spinSoundRef} preload='auto'>
         <source src='/placeholder.mp3' type='audio/mpeg' />
       </audio>
       <audio ref={winSoundRef} preload='auto'>
         <source src='/placeholder.mp3' type='audio/mpeg' />
-      </audio>
+      </audio> */}
     </div>
   )
 }
