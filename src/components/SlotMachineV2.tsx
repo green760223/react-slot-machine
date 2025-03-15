@@ -631,7 +631,7 @@ export default function SlotMachineV2() {
                         key={index}
                         className='absolute w-full h-56 flex items-center justify-center'
                         style={{ top: `${index * 100}%` }}>
-                        <div className='text-4xl font-extrabold text-black'>
+                        <div className='text-4xl font-extrabold text-black pl-4'>
                           {employee.empNo}
                         </div>
                       </div>
@@ -680,9 +680,9 @@ export default function SlotMachineV2() {
           className={`absolute top-[15%] left-1/2 -translate-x-1/2 w-full max-w-[1400px] px-4 transition-opacity duration-500 ${
             showWinnersList ? "opacity-100" : "opacity-0"
           }`}>
-          <div className='bg-white rounded-lg p-4 shadow-lg h-[650px] overflow-y-auto'>
+          <div className='bg-white rounded-lg p-4 shadow-lg h-[700px] overflow-y-auto'>
             <h2 className='text-4xl font-bold text-center py-6 text-black'>
-              恭喜以下中獎者！
+              恭喜以下中獎同仁！
             </h2>
             <div className='grid grid-cols-4 gap-4 text-center font-bold text-lg mb-4 border-b border-black p-4'>
               <div className='text-2xl'>所屬部門</div>
