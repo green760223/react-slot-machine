@@ -4,7 +4,7 @@ import "./SlotMachineV2.css"
 import EmployeesData from "../data/EmployeesData"
 
 export default function SlotMachineV2() {
-  const TOTAL_WINNERS = 5
+  const TOTAL_WINNERS = 10
   const [isSpinning, setIsSpinning] = useState(false)
   const [deptSpinning, setDeptSpinning] = useState(false)
   const [empNoSpinning, setEmpNoSpinning] = useState(false)
@@ -130,7 +130,7 @@ export default function SlotMachineV2() {
     setRedrawMode(true)
     setRedrawingIndex(index)
     setShowWinnersList(false)
-    setTimeout(() => spin(true, index), 500)
+    setTimeout(() => spin(true, index), 1000)
   }
 
   const formatDept = (dept: string) => {
@@ -278,7 +278,7 @@ export default function SlotMachineV2() {
         </div>
 
         {/* 中獎者列表 */}
-        <div
+        {/* <div
           className={`absolute top-[15%] left-1/2 -translate-x-1/2 w-full max-w-[1400px] px-4 transition-opacity duration-500 ${
             showWinnersList ? "opacity-100" : "opacity-0"
           }`}>
@@ -290,25 +290,77 @@ export default function SlotMachineV2() {
               <div className='text-2xl'>所屬部門</div>
               <div className='text-2xl'>員工編號</div>
               <div className='text-2xl'>姓名</div>
-              <div className='text-2xl'>操作</div>
             </div>
             {winners.map((winner, index) => (
               <div
                 key={index}
-                className='grid grid-cols-4 gap-4 text-center text-xl py-4 border-b border-gray-300'>
+                className='grid grid-cols-4 gap-4 text-center text-xl py-2 border-b border-gray-300'>
                 <div className='font-bold tracking-widest'>{winner.dept}</div>
                 <div className='font-bold tracking-widest'>{winner.empNo}</div>
                 <div className='font-bold tracking-widest'>{winner.name}</div>
                 <div>
                   <Button
-                    variant='secondary'
-                    className='text-xl py-2 px-4 h-10 w-28 tracking-widest'
-                    onClick={() => handleRedraw(index)}>
-                    棄權重抽
+                    variant='link'
+                    // className='py-2 px-4 ' // 調整寬度以適應圖標
+                    onClick={() => handleRedraw(index)}
+                    title='棄權重抽' // 添加 tooltip 提示
+                  >
+                    <img
+                      src='/weido_logo.png' // 圖片路徑（根據實際路徑調整）
+                      alt='棄權重抽'
+                      className='h-16 w-16' // 調整圖片大小
+                    />
                   </Button>
                 </div>
               </div>
             ))}
+          </div>
+        </div> */}
+        <div
+          className={`absolute top-[12%] left-1/2 -translate-x-1/2 w-full max-w-[1400px] px-4 transition-opacity duration-500 ${
+            showWinnersList ? "opacity-100" : "opacity-0"
+          }`}>
+          <div className='bg-white rounded-lg p-4 shadow-lg max-h-[1000px] overflow-y-auto'>
+            {/* 標題 */}
+            <h2 className='text-3xl font-bold text-center py-5 text-black'>
+              第一階段 NO.1-10獎 現金$3,000元
+            </h2>
+            {/* 表頭 */}
+            <div className='grid grid-cols-4 gap-4 text-center font-bold text-lg mb-4 border-b border-black p-4'>
+              <div className='text-2xl'>所屬部門</div>
+              <div className='text-2xl'>員工編號</div>
+              <div className='text-2xl'>姓名</div>
+            </div>
+            {/* 中獎清單 */}
+            <div
+              style={{
+                minHeight:
+                  winners.length > 0 ? `${winners.length * 50 + 100}px` : "0px", // 動態計算最小高度
+              }}>
+              {winners.map((winner, index) => (
+                <div
+                  key={index}
+                  className='grid grid-cols-4 gap-4 text-center text-xl py-1 border-b border-gray-300 justify-center items-center'>
+                  <div className='font-bold tracking-widest'>{winner.dept}</div>
+                  <div className='font-bold tracking-widest'>
+                    {winner.empNo}
+                  </div>
+                  <div className='font-bold tracking-widest'>{winner.name}</div>
+                  <div>
+                    <Button
+                      variant='link'
+                      onClick={() => handleRedraw(index)}
+                      title='棄權重抽'>
+                      <img
+                        src='/weido_logo.png'
+                        alt='棄權重抽'
+                        className='h-14 w-14'
+                      />
+                    </Button>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 
