@@ -1,18 +1,23 @@
 import { useState, useRef, useEffect } from "react"
 import { Button } from "@/components/ui/button"
-import "./SlotMachineV2.css"
-import EmployeesData from "../data/EmployeesData"
+import "./PhaseOneAndOne.css"
+// import EmployeesData from "../data/EmployeesData"
+import api from "@/api"
+import { Employee } from "@/types/api"
 
-export default function SlotMachineV2() {
+export default function PhaseOneAndOne() {
   const TOTAL_WINNERS = 10
   const [isSpinning, setIsSpinning] = useState(false)
   const [deptSpinning, setDeptSpinning] = useState(false)
   const [empNoSpinning, setEmpNoSpinning] = useState(false)
   const [nameSpinning, setNameSpinning] = useState(false)
-  const [currentWinner, setCurrentWinner] = useState<
-    (typeof EmployeesData)[0] | null
-  >(null)
-  const [winners, setWinners] = useState<(typeof EmployeesData)[0][]>([])
+  const [employeesData, setEmployeesData] = useState<Employee.Info[]>([])
+  // const [currentWinner, setCurrentWinner] = useState<
+  //   (typeof EmployeesData)[0] | null
+  //   >(null)
+  const [currentWinner, setCurrentWinner] = useState<Employee.Info | null>(null)
+  // const [winners, setWinners] = useState<(typeof EmployeesData)[0][]>([])
+  const [winners, setWinners] = useState<Employee.Info[]>([])
   const [soundEnabled, setSoundEnabled] = useState(true)
   const [selectedWinnerIndex, setSelectedWinnerIndex] = useState(0)
   const [currentDrawCount, setCurrentDrawCount] = useState(0)
@@ -24,6 +29,17 @@ export default function SlotMachineV2() {
   const winSoundRef = useRef<HTMLAudioElement | null>(null)
   const reelRefs = useRef<(HTMLDivElement | null)[]>([])
   const usedIndices = useRef<Set<number>>(new Set())
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    getEmployeesByGroupOne()
+  }, [])
+
+  useEffect(() => {
+    if (winners.length > 0) {
+      console.log("Current winners list:", winners)
+    }
+  }, [winners])
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -43,17 +59,37 @@ export default function SlotMachineV2() {
     return () => window.removeEventListener("keydown", handleKeyDown)
   }, [isSpinning, winners, showWinnersList, redrawMode])
 
-  const playSound = (audioRef: React.RefObject<HTMLAudioElement>) => {
+  // Fetch employees data by group one from the API
+  const getEmployeesByGroupOne = async () => {
     try {
-      if (soundEnabled && audioRef.current) {
-        audioRef.current.currentTime = 0
-        audioRef.current.play().catch(() => setSoundEnabled(false))
+      setIsLoading(true)
+      const res: Employee.Info[] = await api.getEmployeeByGroupOne()
+      console.log("Raw API response:", res) // 調試：檢查 API 返回的數據
+      if (res && Array.isArray(res) && res.length > 0) {
+        setEmployeesData(res)
+      } else {
+        console.warn("Invalid or empty data returned from API")
+        setEmployeesData([]) // 設置空陣列以避免後續錯誤
       }
     } catch (error) {
-      console.error("Error playing sound:", error)
-      setSoundEnabled(false)
+      console.error("Error fetching employees:", error)
+      setEmployeesData([]) // 錯誤時設置空陣列
+    } finally {
+      setIsLoading(false)
     }
   }
+
+  // const playSound = (audioRef: React.RefObject<HTMLAudioElement>) => {
+  //   try {
+  //     if (soundEnabled && audioRef.current) {
+  //       audioRef.current.currentTime = 0
+  //       audioRef.current.play().catch(() => setSoundEnabled(false))
+  //     }
+  //   } catch (error) {
+  //     console.error("Error playing sound:", error)
+  //     setSoundEnabled(false)
+  //   }
+  // }
 
   const spin = (isRedraw = false, redrawIndex?: number) => {
     if (isSpinning || (winners.length >= TOTAL_WINNERS && !isRedraw)) return
@@ -63,18 +99,22 @@ export default function SlotMachineV2() {
     setEmpNoSpinning(true)
     setNameSpinning(true)
     setCurrentWinner(null)
-    playSound(spinSoundRef)
+    // playSound(spinSoundRef)
 
     let winnerIndex: number
     do {
-      winnerIndex = Math.floor(Math.random() * EmployeesData.length)
+      // winnerIndex = Math.floor(Math.random() * EmployeesData.length)
+      winnerIndex = Math.floor(Math.random() * employeesData.length)
     } while (usedIndices.current.has(winnerIndex))
 
     usedIndices.current.add(winnerIndex)
     setSelectedWinnerIndex(winnerIndex)
-    const winner = EmployeesData[winnerIndex]
+    // const winner = EmployeesData[winnerIndex]
+    const winner = employeesData[winnerIndex]
+    console.log("Selected winner:", winner)
 
-    const totalItems = EmployeesData.length
+    // const totalItems = EmployeesData.length
+    const totalItems = employeesData.length
     const deptSpins = Math.floor(Math.random() * 20) + 20
     const empNoSpins = Math.floor(Math.random() * 20) + 20
     const nameSpins = Math.floor(Math.random() * 20) + 20
@@ -113,19 +153,31 @@ export default function SlotMachineV2() {
           setTimeout(() => setShowWinnersList(true), 1500)
         }
       }
-      playSound(winSoundRef)
+      // playSound(winSoundRef)
     }, 3000)
   }
 
+  // 棄權重抽
   const handleRedraw = (index: number) => {
     const winnerToRemove = winners[index]
-    const indexToRemove = EmployeesData.findIndex(
+    // const indexToRemove = EmployeesData.findIndex(
+    //   (emp) =>
+    //     emp.dept === winnerToRemove.dept &&
+    //     emp.empNo === winnerToRemove.empNo &&
+    //     emp.name === winnerToRemove.name
+    // )
+    const indexToRemove = employeesData.findIndex(
       (emp) =>
-        emp.dept === winnerToRemove.dept &&
-        emp.empNo === winnerToRemove.empNo &&
+        emp.department === winnerToRemove.department &&
+        emp.employee_id === winnerToRemove.employee_id &&
         emp.name === winnerToRemove.name
     )
     if (indexToRemove !== -1) usedIndices.current.delete(indexToRemove)
+    else
+      console.log(
+        "Winner not found in employeesData for redraw:",
+        winnerToRemove
+      ) // 調試
 
     setRedrawMode(true)
     setRedrawingIndex(index)
@@ -133,6 +185,7 @@ export default function SlotMachineV2() {
     setTimeout(() => spin(true, index), 1000)
   }
 
+  // 格式化部門名稱 - 換行
   const formatDept = (dept: string) => {
     const keywords = ["點點心", "忠青商行", "炒湘湘"]
     for (const keyword of keywords) {
@@ -189,8 +242,8 @@ export default function SlotMachineV2() {
                         }
                       : {}
                   }>
-                  {[...Array(EmployeesData.length)].map((_, index) => {
-                    const employee = EmployeesData[index % EmployeesData.length]
+                  {[...Array(employeesData.length)].map((_, index) => {
+                    const employee = employeesData[index % employeesData.length]
                     return (
                       <div
                         key={index}
@@ -202,7 +255,7 @@ export default function SlotMachineV2() {
                             whiteSpace: "pre-wrap",
                             textAlign: "center",
                           }}>
-                          {formatDept(employee.dept)}
+                          {formatDept(employee.department)}
                         </div>
                       </div>
                     )
@@ -226,15 +279,15 @@ export default function SlotMachineV2() {
                         }
                       : {}
                   }>
-                  {[...Array(EmployeesData.length)].map((_, index) => {
-                    const employee = EmployeesData[index % EmployeesData.length]
+                  {[...Array(employeesData.length)].map((_, index) => {
+                    const employee = employeesData[index % employeesData.length]
                     return (
                       <div
                         key={index}
                         className='absolute w-full h-56 flex items-center justify-center'
                         style={{ top: `${index * 100}%` }}>
                         <div className='text-4xl font-extrabold text-black pl-4'>
-                          {employee.empNo}
+                          {employee.employee_id}
                         </div>
                       </div>
                     )
@@ -258,8 +311,8 @@ export default function SlotMachineV2() {
                         }
                       : {}
                   }>
-                  {[...Array(EmployeesData.length)].map((_, index) => {
-                    const employee = EmployeesData[index % EmployeesData.length]
+                  {[...Array(employeesData.length)].map((_, index) => {
+                    const employee = employeesData[index % employeesData.length]
                     return (
                       <div
                         key={index}
@@ -278,44 +331,6 @@ export default function SlotMachineV2() {
         </div>
 
         {/* 中獎者列表 */}
-        {/* <div
-          className={`absolute top-[15%] left-1/2 -translate-x-1/2 w-full max-w-[1400px] px-4 transition-opacity duration-500 ${
-            showWinnersList ? "opacity-100" : "opacity-0"
-          }`}>
-          <div className='bg-white rounded-lg p-4 shadow-lg h-[700px] overflow-y-auto'>
-            <h2 className='text-4xl font-bold text-center py-6 text-black'>
-              恭喜以下中獎同仁！
-            </h2>
-            <div className='grid grid-cols-4 gap-4 text-center font-bold text-lg mb-4 border-b border-black p-4'>
-              <div className='text-2xl'>所屬部門</div>
-              <div className='text-2xl'>員工編號</div>
-              <div className='text-2xl'>姓名</div>
-            </div>
-            {winners.map((winner, index) => (
-              <div
-                key={index}
-                className='grid grid-cols-4 gap-4 text-center text-xl py-2 border-b border-gray-300'>
-                <div className='font-bold tracking-widest'>{winner.dept}</div>
-                <div className='font-bold tracking-widest'>{winner.empNo}</div>
-                <div className='font-bold tracking-widest'>{winner.name}</div>
-                <div>
-                  <Button
-                    variant='link'
-                    // className='py-2 px-4 ' // 調整寬度以適應圖標
-                    onClick={() => handleRedraw(index)}
-                    title='棄權重抽' // 添加 tooltip 提示
-                  >
-                    <img
-                      src='/weido_logo.png' // 圖片路徑（根據實際路徑調整）
-                      alt='棄權重抽'
-                      className='h-16 w-16' // 調整圖片大小
-                    />
-                  </Button>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div> */}
         <div
           className={`absolute top-[12%] left-1/2 -translate-x-1/2 w-full max-w-[1400px] px-4 transition-opacity duration-500 ${
             showWinnersList ? "opacity-100" : "opacity-0"
@@ -341,11 +356,15 @@ export default function SlotMachineV2() {
                 <div
                   key={index}
                   className='grid grid-cols-4 gap-4 text-center text-xl py-1 border-b border-gray-300 justify-center items-center'>
-                  <div className='font-bold tracking-widest'>{winner.dept}</div>
                   <div className='font-bold tracking-widest'>
-                    {winner.empNo}
+                    {/* {winner.department} */}
                   </div>
-                  <div className='font-bold tracking-widest'>{winner.name}</div>
+                  <div className='font-bold tracking-widest'>
+                    {/* {winner.employee_id} */}
+                  </div>
+                  <div className='font-bold tracking-widest'>
+                    {/* {winner.name} */}
+                  </div>
                   <div>
                     <Button
                       variant='link'

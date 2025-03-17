@@ -1,5 +1,6 @@
 // import SlotMachine from "./components/SlotMachine"
-import SlotMachineV2 from "./components/SlotMachineV2"
+import PhaseOneAndOne from "./components/PhaseOneAndOne"
+import Testing from "./components/Testing"
 import "./App.css"
 
 const App = () => {
@@ -27,7 +28,8 @@ const App = () => {
         感谢 中菲行國際物流集團創辦人 錢義懷先生 贊助
       </p> */}
       {/* <SlotMachine /> */}
-      <SlotMachineV2 />
+      {/* <PhaseOneAndOne /> */}
+      <Testing />
 
       {/* <p className='mt-50 font-bold text-6xl tracking-widest'>
         抽獎組別: A/B/C

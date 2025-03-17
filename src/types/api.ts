@@ -19,3 +19,16 @@ export namespace Employee {
     lottery_eligibility: string
   }
 }
+
+export namespace Winner {
+  export interface Info {
+    id: number
+    name: string
+    group: string
+    department: string
+    employee_id: string
+    prize: string
+    is_won: boolean
+    is_donated: boolean
+  }
+}
