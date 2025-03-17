@@ -1,8 +1,9 @@
 import { useState, useRef, useEffect } from "react"
 import { Button } from "@/components/ui/button"
-import "./PhaseOneAndOne.css"
+import "../PhaseOne/PhaseOne.css"
 import api from "@/api"
-import { Employee, Winner } from "@/types/api"
+import { Employee } from "@/types/api"
+import confetti from "canvas-confetti"
 
 export default function PhaseOneAndOne() {
   const TOTAL_WINNERS = 10
@@ -24,6 +25,7 @@ export default function PhaseOneAndOne() {
     []
   )
   const [isSubmitting, setIsSubmitting] = useState(false) // 提交狀態
+  const [hasStarted, setHasStarted] = useState(false) // 新增狀態：追蹤抽獎是否開始
 
   const spinSoundRef = useRef<HTMLAudioElement | null>(null)
   const winSoundRef = useRef<HTMLAudioElement | null>(null)
@@ -50,13 +52,20 @@ export default function PhaseOneAndOne() {
         employeesData.length > 0
       ) {
         if (redrawMode) return
-        else if (winners.length < TOTAL_WINNERS) spin()
-        else if (!showWinnersList) setShowWinnersList(true)
-        else {
+        else if (winners.length < TOTAL_WINNERS) {
+          // 第一次抽獎時，設置 hasStarted 為 true
+          if (winners.length === 0) {
+            setHasStarted(true)
+          }
+          spin()
+        } else if (!showWinnersList) {
+          setShowWinnersList(true)
+        } else {
           setWinners([])
           setAllWinnersHistory([]) // 重置歷史記錄
           setCurrentDrawCount(0)
           setShowWinnersList(false)
+          setHasStarted(false) // 重置 hasStarted
           usedIndices.current.clear()
         }
       } else if (isLoading || employeesData.length === 0) {
@@ -174,7 +183,6 @@ export default function PhaseOneAndOne() {
       setCurrentWinner(winner)
 
       // 記錄到歷史中
-      // setAllWinnersHistory((prev) => [...prev, winner])
       setAllWinnersHistory((prev) => {
         if (isRedraw && redrawIndex !== undefined) {
           // 標記被棄權的員工為 is_donated: true
@@ -261,13 +269,48 @@ export default function PhaseOneAndOne() {
       const formattedWinners = formatWinnersForApi()
       const response = await api.addWinners(formattedWinners)
       console.log("API response:", response)
-      // alert("中獎資料已成功送出！")
+      // alert("中獎資料已成功送出！");
+      triggerConfetti() // 成功提交後觸發彩帶效果
     } catch (error) {
       console.error("Error submitting winners:", error)
-      // alert("送出中獎資料失敗，請稍後再試！")
+      // alert("送出中獎資料失敗，請稍後再試！");
     } finally {
       setIsSubmitting(false)
     }
+  }
+
+  // 觸發彩帶效果（持續 3 秒）
+  const triggerConfetti = () => {
+    const duration = 3 * 1000 // 持續時間設為 3 秒
+    const animationEnd = Date.now() + duration
+    const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 }
+
+    // 隨機範圍函數
+    const randomInRange = (min: number, max: number) => {
+      return Math.random() * (max - min) + min
+    }
+
+    // 每 250 毫秒發射一次彩帶
+    const interval = setInterval(() => {
+      const timeLeft = animationEnd - Date.now()
+
+      if (timeLeft <= 0) {
+        return clearInterval(interval)
+      }
+
+      const particleCount = 300 * (timeLeft / duration) // 隨時間減少彩帶數量
+      // 從左右兩側隨機位置發射
+      confetti({
+        ...defaults,
+        particleCount,
+        origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
+      })
+      confetti({
+        ...defaults,
+        particleCount,
+        origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
+      })
+    }, 250)
   }
 
   const formatDept = (dept: string) => {
@@ -308,6 +351,8 @@ export default function PhaseOneAndOne() {
             <div className='text-white text-2xl'>
               No employees data available.
             </div>
+          ) : !hasStarted ? (
+            <div className='text-white text-2xl'></div>
           ) : (
             <div className='flex items-center justify-center min-h-[500px] pr-24'>
               <div className='grid grid-cols-3 gap-4 w-full'>
