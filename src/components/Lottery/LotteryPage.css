@@ -1,0 +1,27 @@
+.slot-reel {
+  transition: transform 0.1s linear;
+}
+
+.slot-reel.spinning {
+  animation: spin-reel 0.3s linear infinite, slow-down 0.5s ease-out forwards;
+}
+
+@keyframes spin-reel {
+  0% {
+    transform: translateY(0%);
+  }
+  100% {
+    transform: translateY(-2000%);
+  }
+}
+
+@keyframes slow-down {
+  0% {
+    animation-timing-function: linear;
+    animation-duration: 0.3s;
+  }
+  100% {
+    animation-timing-function: ease-out;
+    animation-duration: 0.5s;
+  }
+}
