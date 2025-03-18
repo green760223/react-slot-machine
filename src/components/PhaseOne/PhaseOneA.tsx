@@ -5,7 +5,7 @@ import api from "@/api"
 import { Employee } from "@/types/api"
 import confetti from "canvas-confetti"
 
-export default function PhaseOneAndOne() {
+export default function PhaseOneA() {
   const TOTAL_WINNERS = 10 // 設置總中獎人數
   const [isSpinning, setIsSpinning] = useState(false)
   const [deptSpinning, setDeptSpinning] = useState(false)
