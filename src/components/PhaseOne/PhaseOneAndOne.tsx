@@ -208,7 +208,7 @@ export default function PhaseOneAndOne() {
         }}>
         {/* 頂部文字 */}
         <div className='absolute top-[30%] left-0 w-full flex flex-col items-center'>
-          <div className='text-5xl font-bold text-white tracking-widest pt-5'>
+          <div className='text-5xl font-bold text-white tracking-widest pt-5 '>
             ★ 第一階段摸彩 ★
           </div>
           <div className='text-5xl tracking-widest text-white font-bold pt-5'>

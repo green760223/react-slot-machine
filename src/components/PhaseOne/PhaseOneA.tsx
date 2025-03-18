@@ -6,7 +6,7 @@ import { Employee } from "@/types/api"
 import confetti from "canvas-confetti"
 
 export default function PhaseOneAndOne() {
-  const TOTAL_WINNERS = 10
+  const TOTAL_WINNERS = 10 // 設置總中獎人數
   const [isSpinning, setIsSpinning] = useState(false)
   const [deptSpinning, setDeptSpinning] = useState(false)
   const [empNoSpinning, setEmpNoSpinning] = useState(false)
@@ -43,6 +43,7 @@ export default function PhaseOneAndOne() {
     }
   }, [winners])
 
+  // 設定按下Enter時開始抽獎
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (
@@ -83,26 +84,27 @@ export default function PhaseOneAndOne() {
     employeesData,
   ])
 
-  // Fetch employees data by group one from the API
+  // 獲取第一階段摸彩年資員工列表
   const getEmployeesByGroupOne = async () => {
     try {
       setIsLoading(true)
       const res: Employee.Info[] = await api.getEmployeeByGroupOne()
-      console.log("Raw API response:", res) // 調試：檢查 API 返回的數據
+      console.log("Raw API response:", res)
       if (res && Array.isArray(res) && res.length > 0) {
         setEmployeesData(res)
       } else {
         console.warn("Invalid or empty data returned from API")
-        setEmployeesData([]) // 設置空陣列以避免後續錯誤
+        setEmployeesData([])
       }
     } catch (error) {
       console.error("Error fetching employees:", error)
-      setEmployeesData([]) // 錯誤時設置空陣列
+      setEmployeesData([])
     } finally {
       setIsLoading(false)
     }
   }
 
+  // 播放音效
   const playSound = (audioRef: React.RefObject<HTMLAudioElement>) => {
     try {
       if (soundEnabled && audioRef.current) {
@@ -115,6 +117,7 @@ export default function PhaseOneAndOne() {
     }
   }
 
+  // 開始老虎機轉動抽獎
   const spin = (isRedraw = false, redrawIndex?: number) => {
     if (
       isSpinning ||
@@ -142,7 +145,7 @@ export default function PhaseOneAndOne() {
         winnerIndex,
         "employeesData length:",
         employeesData.length
-      ) // 調試
+      )
     } while (usedIndices.current.has(winnerIndex) && employeesData.length > 0)
 
     if (winnerIndex >= employeesData.length || winnerIndex < 0) {
@@ -157,7 +160,7 @@ export default function PhaseOneAndOne() {
       console.error("Winner is undefined at index:", winnerIndex)
       return
     }
-    console.log("Selected winner:", winner) // 調試
+    console.log("Selected winner:", winner)
 
     const totalItems = employeesData.length
     const deptSpins = Math.floor(Math.random() * 20) + 20
@@ -182,7 +185,7 @@ export default function PhaseOneAndOne() {
       setIsSpinning(false)
       setCurrentWinner(winner)
 
-      // 記錄到歷史中
+      // 記錄到中獎歷史清單中
       setAllWinnersHistory((prev) => {
         if (isRedraw && redrawIndex !== undefined) {
           // 標記被棄權的員工為 is_donated: true
@@ -212,7 +215,7 @@ export default function PhaseOneAndOne() {
         setWinners((prev) => [...prev, winner])
         setCurrentDrawCount((prev) => prev + 1)
         if (currentDrawCount + 1 >= TOTAL_WINNERS) {
-          setTimeout(() => setShowWinnersList(true), 1500)
+          setTimeout(() => setShowWinnersList(true), 1000)
         }
       }
       playSound(winSoundRef)
@@ -232,7 +235,7 @@ export default function PhaseOneAndOne() {
       console.log(
         "Winner not found in employeesData for redraw:",
         winnerToRemove
-      ) // 調試
+      )
 
     setRedrawMode(true)
     setRedrawingIndex(index)
@@ -262,24 +265,22 @@ export default function PhaseOneAndOne() {
     })
   }
 
-  // 送出中獎資料到 API
+  // 透過API將中獎清單資料送出
   const submitWinners = async () => {
     setIsSubmitting(true)
     try {
       const formattedWinners = formatWinnersForApi()
       const response = await api.addWinners(formattedWinners)
       console.log("API response:", response)
-      // alert("中獎資料已成功送出！");
       triggerConfetti() // 成功提交後觸發彩帶效果
     } catch (error) {
       console.error("Error submitting winners:", error)
-      // alert("送出中獎資料失敗，請稍後再試！");
     } finally {
       setIsSubmitting(false)
     }
   }
 
-  // 觸發彩帶效果（持續 3 秒）
+  // 觸發彩帶效果
   const triggerConfetti = () => {
     const duration = 3 * 1000 // 持續時間設為 3 秒
     const animationEnd = Date.now() + duration
@@ -313,6 +314,7 @@ export default function PhaseOneAndOne() {
     }, 250)
   }
 
+  // 格式化部門名稱
   const formatDept = (dept: string) => {
     const keywords = ["點點心", "忠青商行", "炒湘湘"]
     for (const keyword of keywords) {
@@ -333,10 +335,10 @@ export default function PhaseOneAndOne() {
           backgroundRepeat: "no-repeat",
         }}>
         <div className='absolute top-[30%] left-0 w-full flex flex-col items-center'>
-          <div className='text-5xl font-bold text-white tracking-widest pt-5'>
+          <div className='text-5xl font-bold text-white tracking-widest pt-5 pr-30'>
             ★ 第一階段摸彩 ★
           </div>
-          <div className='text-5xl tracking-widest text-white font-bold pt-5'>
+          <div className='text-5xl tracking-widest text-white font-bold pt-5 pr-20'>
             NO.1-10獎 現金$3,000元，共10位
           </div>
         </div>
@@ -349,7 +351,7 @@ export default function PhaseOneAndOne() {
             <div className='text-white text-2xl'>Loading...</div>
           ) : employeesData.length === 0 ? (
             <div className='text-white text-2xl'>
-              No employees data available.
+              {/* No employees data available. */}
             </div>
           ) : !hasStarted ? (
             <div className='text-white text-2xl'></div>
@@ -531,12 +533,12 @@ export default function PhaseOneAndOne() {
         </div>
 
         <div className='absolute bottom-35 left-1/2 -translate-x-1/2 w-full text-center'>
-          <div className='text-3xl font-extrabold text-white tracking-widest'>
+          <div className='text-3xl font-extrabold text-white tracking-widest pr-20'>
             {redrawMode
               ? "重新抽獎中..."
               : showWinnersList
               ? ""
-              : `抽獎進度: ${winners.length}/${TOTAL_WINNERS}`}
+              : `抽獎進度: ${winners.length} / ${TOTAL_WINNERS}`}
           </div>
         </div>
       </div>
