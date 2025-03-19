@@ -4,7 +4,7 @@ import LotteryPage from "../components/Lottery/LotteryPage"
 // 第一階段路由
 const phaseOneRoutes = [
   {
-    path: "/phase-one-1-10",
+    path: "/phase-1-1",
     element: (
       <LotteryPage
         title='★ 第一階段摸彩 ★'
@@ -16,7 +16,7 @@ const phaseOneRoutes = [
     ),
   },
   {
-    path: "/phase-one-11-20",
+    path: "/phase-1-2",
     element: (
       <LotteryPage
         title='★ 第一階段摸彩 ★'
@@ -28,7 +28,7 @@ const phaseOneRoutes = [
     ),
   },
   {
-    path: "/phase-one-21",
+    path: "/phase-1-3",
     element: (
       <LotteryPage
         title='★ 第一階段摸彩 ★'
@@ -44,7 +44,7 @@ const phaseOneRoutes = [
 // 第二階段路由
 const phaseTwoRoutes = [
   {
-    path: "/phase-two-1-10",
+    path: "/phase-2-1",
     element: (
       <LotteryPage
         title='★ 第二階段摸彩 ★'
@@ -56,7 +56,7 @@ const phaseTwoRoutes = [
     ),
   },
   {
-    path: "/phase-two-11-20",
+    path: "/phase-2-2",
     element: (
       <LotteryPage
         title='★ 第二階段摸彩 ★'
@@ -68,7 +68,7 @@ const phaseTwoRoutes = [
     ),
   },
   {
-    path: "/phase-two-21-22",
+    path: "/phase-2-3",
     element: (
       <LotteryPage
         title='★ 第二階段摸彩 ★'
@@ -80,7 +80,7 @@ const phaseTwoRoutes = [
     ),
   },
   {
-    path: "/phase-two-23-24",
+    path: "/phase-2-4",
     element: (
       <LotteryPage
         title='★ 第二階段摸彩 ★'
@@ -96,7 +96,7 @@ const phaseTwoRoutes = [
 // 第三階段路由
 const phaseThreeRoutes = [
   {
-    path: "/phase-three-1-10",
+    path: "/phase-3-1",
     element: (
       <LotteryPage
         title='★ 第三階段摸彩 ★'
@@ -108,7 +108,7 @@ const phaseThreeRoutes = [
     ),
   },
   {
-    path: "/phase-three-11-15",
+    path: "/phase-3-2",
     element: (
       <LotteryPage
         title='★ 第三階段摸彩 ★'
@@ -120,7 +120,7 @@ const phaseThreeRoutes = [
     ),
   },
   {
-    path: "/phase-three-16-20",
+    path: "/phase-3-3",
     element: (
       <LotteryPage
         title='★ 第三階段摸彩 ★'
@@ -132,7 +132,7 @@ const phaseThreeRoutes = [
     ),
   },
   {
-    path: "/phase-three-21-22",
+    path: "/phase-3-4",
     element: (
       <LotteryPage
         title='★ 第三階段摸彩 ★'
@@ -144,7 +144,7 @@ const phaseThreeRoutes = [
     ),
   },
   {
-    path: "/phase-three-23-24",
+    path: "/phase-3-5",
     element: (
       <LotteryPage
         title='★ 第三階段摸彩 ★'
@@ -160,7 +160,7 @@ const phaseThreeRoutes = [
 // 加碼階段路由
 const bonusRoutes = [
   {
-    path: "/bonus-phase-1-5",
+    path: "/bonus-1-1",
     element: (
       <LotteryPage
         title='★ 加碼階段摸彩 ★'
