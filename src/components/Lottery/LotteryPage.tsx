@@ -1,4 +1,3 @@
-// src/components/LotteryPage.tsx
 import { useState, useRef, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import "../PhaseOne/PhaseOne.css"
@@ -29,14 +28,16 @@ export default function LotteryPage({
   const [availableEmployees, setAvailableEmployees] = useState<Employee.Info[]>(
     []
   )
-  const [currentWinner, setCurrentWinner] = useState<Employee.Info | null>(null)
+  const [_currentWinner, setCurrentWinner] = useState<Employee.Info | null>(
+    null
+  )
   const [winners, setWinners] = useState<Employee.Info[]>([])
   const [soundEnabled, setSoundEnabled] = useState(true)
   const [selectedWinnerIndex, setSelectedWinnerIndex] = useState(0)
   const [currentDrawCount, setCurrentDrawCount] = useState(0)
   const [showWinnersList, setShowWinnersList] = useState(false)
   const [redrawMode, setRedrawMode] = useState(false)
-  const [redrawingIndex, setRedrawingIndex] = useState<number | null>(null)
+  const [_redrawingIndex, setRedrawingIndex] = useState<number | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [allWinnersHistory, setAllWinnersHistory] = useState<Employee.Info[]>(
     []
@@ -166,7 +167,7 @@ export default function LotteryPage({
     console.log("Selected winner:", winner)
 
     setAvailableEmployees((prev) =>
-      prev.filter((emp, idx) => idx !== winnerIndex)
+      prev.filter((_emp, idx) => idx !== winnerIndex)
     )
 
     const originalIndex = employeesData.findIndex(
