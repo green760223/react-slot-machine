@@ -164,10 +164,22 @@ const bonusRoutes = [
     element: (
       <LotteryPage
         title='★ 加碼階段摸彩 ★'
-        subtitle='NO.1-5獎 現金$???元，共?位'
+        subtitle='NO.1-10獎 現金$5,000元，共10位'
+        totalWinners={10}
+        apiEndpoint='/employee/get-employees-by-all-groups'
+        prizeName='加碼階段 NO.1-10獎 現金$5,000元'
+      />
+    ),
+  },
+  {
+    path: "/bonus-1-2",
+    element: (
+      <LotteryPage
+        title='★ 加碼階段摸彩 ★'
+        subtitle='現金$?元，共?位'
         totalWinners={5}
         apiEndpoint='/employee/get-employees-by-all-groups'
-        prizeName='加碼階段 現金$???元'
+        prizeName='加碼階段 現金$?元'
       />
     ),
   },

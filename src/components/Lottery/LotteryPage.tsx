@@ -361,7 +361,7 @@ export default function LotteryPage({
         </div>
 
         <div
-          className={`absolute top-[35%] left-1/2 -translate-x-1/2 w-full max-w-[1100px] pt-12 ${
+          className={`absolute top-[35%] left-1/2 -translate-x-1/2 w-full max-w-[1200px] pt-18 pr-10 ${
             showWinnersList ? "opacity-0" : "opacity-100"
           }`}>
           {isLoading ? (
@@ -373,7 +373,7 @@ export default function LotteryPage({
           ) : !hasStarted ? (
             <div className='text-white text-2xl'></div>
           ) : (
-            <div className='flex items-center justify-center min-h-[500px] pr-24'>
+            <div className='flex items-center justify-center min-h-[500px] pr-15'>
               <div className='grid grid-cols-3 gap-4 w-full'>
                 <div className='relative h-56 overflow-hidden'>
                   <div
@@ -403,7 +403,7 @@ export default function LotteryPage({
                           className='absolute w-full h-56 flex items-center justify-center'
                           style={{ top: `${index * 100}%` }}>
                           <div
-                            className='text-4xl font-extrabold text-black tracking-widest leading-relaxed'
+                            className='text-3xl font-extrabold text-black tracking-widest leading-relaxed'
                             style={{
                               whiteSpace: "pre-wrap",
                               textAlign: "center",
@@ -443,7 +443,7 @@ export default function LotteryPage({
                           key={index}
                           className='absolute w-full h-56 flex items-center justify-center'
                           style={{ top: `${index * 100}%` }}>
-                          <div className='text-4xl font-extrabold text-black pl-4'>
+                          <div className='text-3xl font-extrabold text-black '>
                             {employee.employee_id || "未知編號"}
                           </div>
                         </div>
@@ -477,9 +477,9 @@ export default function LotteryPage({
                       return (
                         <div
                           key={index}
-                          className='absolute w-full h-56 flex items-center justify-center'
+                          className='absolute w-full h-56 flex items-center justify-center pl-5'
                           style={{ top: `${index * 100}%` }}>
-                          <div className='text-4xl font-extrabold text-black'>
+                          <div className='text-3xl font-extrabold text-black'>
                             {employee.name || "未知姓名"}
                           </div>
                         </div>
@@ -504,7 +504,6 @@ export default function LotteryPage({
               <div className='text-2xl'>所屬部門</div>
               <div className='text-2xl'>員工編號</div>
               <div className='text-2xl'>姓名</div>
-              <div className='text-2xl'>操作</div>
             </div>
             <div
               style={{
@@ -549,7 +548,7 @@ export default function LotteryPage({
           </div>
         </div>
 
-        <div className='absolute bottom-35 left-1/2 -translate-x-1/2 w-full text-center'>
+        <div className='absolute bottom-30 left-1/2 -translate-x-1/2 w-full text-center'>
           <div className='text-3xl font-extrabold text-white tracking-widest pr-20'>
             {redrawMode
               ? "重新抽獎中..."
