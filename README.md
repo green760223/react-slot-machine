@@ -1,50 +1,83 @@
-# React + TypeScript + Vite
+# 🎰 Enterprise-Scale Slot Lottery Prize Drawing System – Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is the frontend interface of the **Enterprise-Scale Slot Lottery Prize Drawing System**, a customizable, slot-style prize drawing tool designed for internal use at corporate events. Built with React and TypeScript, it provides a dynamic and engaging user experience, allowing organizers to run multi-phase raffles based on employee seniority, redraw opted-out winners, and confirm final winner lists.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 📌 Key Features
 
-## Expanding the ESLint configuration
+- 🎰 **Slot Machine-Style UI**  
+  Animated drawing experience with spinning reels and sound effects.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- 🧩 **Reusable `LotteryPage` Component**  
+  Drawing pages are easily configured via props—such as prize name, phase title, API endpoint, and winner count—mapped to routes.
 
-- Configure the top-level `parserOptions` property like this:
+- 🔄 **Real-Time Redraw Support**  
+  Allows organizers to replace opted-out winners instantly.
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+- 🧑‍💼 **Seniority-Based Eligibility**  
+  Each drawing phase filters employees by years of service using backend logic.
+
+- 📄 **Confirmed Winner List Page**  
+  Final winner lists are generated and displayed after redraws for transparency and record-keeping.
+
+- 🔗 **Multi-Phase Routing System**  
+  Uses React Router to map each draw phase (e.g. `/phase-1-1`) to a different page.
+
+---
+
+## 🛠 Tech Stack
+
+- **Framework:** React 18 + TypeScript  
+- **Styling:** Tailwind CSS  
+- **Routing:** React Router (Hash-based)  
+- **Build Tool:** Vite  
+- **API Integration:** Axios / Fetch to communicate with FastAPI backend
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Node.js ≥ 18
+- Backend API running (e.g. FastAPI at `http://localhost:8000`)
+
+### Installation
+
+```bash
+git clone https://github.com/green760223/react-slot-machine.git
+cd react-slot-machine
+npm install
+npm run dev
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+The frontend assumes backend endpoints like /employee/get-employees-by-group-one are available and CORS is enabled.
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+## ⚙️ Customizing Drawing Phases
+Each drawing page is generated via React Router and the reusable LotteryPage component. Example configuration:
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+```bash
+{
+  path: "/phase-1-1",
+  element: (
+    <LotteryPage
+      title="★ Phase 1 Lottery ★"
+      subtitle="Prize NO.1–10: $3,000"
+      totalWinners={10}
+      apiEndpoint="/employee/get-employees-by-group-one"
+      prizeName="Phase 1 – NO.1–10: $3,000"
+    />
+  ),
+}
 ```
+
+Simply extend the router array to support new prize phases or employee groups.
+
+
+## 🧠 Author
+Developed by Yi-Hsuan (Lawrence) Chuang
+
+## 📄 License
+
+This project is intended for internal corporate event use.
+Contact the author for inquiries or extended licensing.
