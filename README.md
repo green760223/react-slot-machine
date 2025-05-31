@@ -4,6 +4,8 @@ This is the frontend interface of the **Enterprise-Scale Slot Lottery Prize Draw
 
 ![Main page preview](https://live.staticflickr.com/65535/54516188778_4204280096_b.jpg)
 
+![Lottery page preview](https://live.staticflickr.com/65535/54515927846_c46e95f689_b.jpg)
+
 ![Winner list preview](https://live.staticflickr.com/65535/54516188783_249101b70c_b.jpg)
 
 ---
