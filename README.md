@@ -2,9 +2,9 @@
 
 This is the frontend interface of the **Enterprise-Scale Slot Lottery Prize Drawing System**, a customizable, slot-style prize drawing tool designed for internal use at corporate events. Built with React and TypeScript, it provides a dynamic and engaging user experience, allowing organizers to run multi-phase raffles based on employee seniority, redraw opted-out winners, and confirm final winner lists.
 
-![Main page preview](https://live.staticflickr.com/65535/54515927846_670f1021c0_b.jpg)
+![Main page preview](https://live.staticflickr.com/65535/54516188778_4204280096_b.jpg)
 
-![Winner list preview](https://live.staticflickr.com/65535/54516188783_b2303ab071_b.jpg)
+![Winner list preview](https://live.staticflickr.com/65535/54516188783_249101b70c_b.jpg)
 
 ---
 
